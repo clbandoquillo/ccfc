@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
 
     /**
@@ -35,5 +35,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'system_role_id' => 'int'
     ];
+
+    protected $appends = ['user_code'];
+
+    public function getUserCodeAttribute(){
+        return substr($this->attributes['employee_id'],-7,6);
+    }
+
+    public function subjects(){
+        return $this->hasMany(\App\RegisteredSubject::class,'STUDENTCODE','student_code');
+    }
 }
